@@ -1,0 +1,19 @@
+{
+  "name": "SakugaNews",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config ."
+  },
+  "dependencies": {
+    "@telegram.ts/formatters": "^2.0.1",
+    "colors": "^1.4.0",
+    "discord.js": "^14.18.0",
+    "punycode": "^2.3.1",
+    "telegramsjs": "^4.8.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7"
+  }
+}
