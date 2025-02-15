@@ -27,7 +27,7 @@ module.exports = (content, options) => {
     `Новости с ${inlineURL(
       "Discord Sakuga",
       "https://discord.gg/aDgyJXd8WR"
-    )} <code>Test</code> канал ${inlineCode(options.channelName)}\n` +
+    )} канал ${inlineCode(options.channelName)}\n` +
     `${inlineCode(options.author.displayName)}(${inlineCode(
       options.author.username
     )}):\n`;
