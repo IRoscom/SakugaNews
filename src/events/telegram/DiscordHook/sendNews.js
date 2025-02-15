@@ -18,7 +18,6 @@ module.exports = new TelegramEvent({
    * @param {MessageOptions} message
    */
   async execute(client, message) {
-    console.log(TextFormatter(message.content, message));
     let messageSend = null;
     if (message.attachments?.length) {
       messageSend = await client.sendMediaGroup({
