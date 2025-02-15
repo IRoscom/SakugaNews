@@ -11,7 +11,7 @@ module.exports = (content, options) => {
     // underline
     text = text.replace(/__(.*?)__/g, "<u>$1</u>");
     // strikethrough
-    text = text.replace(/~~(.*?)~~/g, "<s>$1<s>");
+    text = text.replace(/~~(.*?)~~/g, "<s>$1</s>");
     // spoiler
     text = text.replace(/\|\|(.*?)\|\|/g, "<tg-spoiler>$1</tg-spoiler>");
     // <a href="url">text</a>
