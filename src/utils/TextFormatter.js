@@ -30,7 +30,7 @@ module.exports = (content, options) => {
     )} канал ${inlineCode(options.channelName)}\n` +
     `${inlineCode(options.author.displayName)}(${inlineCode(
       options.author.username
-    )}):\n`;
+    )}):\n\n`;
   if (content) msg += convertMarkdown(content);
   return msg;
 };
