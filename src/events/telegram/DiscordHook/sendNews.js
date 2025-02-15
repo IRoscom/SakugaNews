@@ -1,15 +1,7 @@
 const channels = require("../../../models/channels");
 const TelegramEvent = require("../../../structures/TelegramEvent");
-const {
-  html: {
-    inlineURL,
-    inlineCode,
-    bold,
-    blockquoteExpandable,
-    blockquote,
-    italic,
-  },
-} = require("@telegram.ts/formatters");
+const modelMessage = require("../../../services/database/message.model");
+const TextFormatter = require("../../../utils/TextFormatter");
 
 module.exports = new TelegramEvent({
   event: "sendMessageNews",
@@ -18,56 +10,41 @@ module.exports = new TelegramEvent({
    * @property {String} displayName
    * @property {String} username
    * @typedef {Object} MessageOptions
+   * @property {String} id
    * @property {String} content
    * @property {Array} attachments
    * @property {String} channelName
    * @property {MessageAuthorOptions} author
    * @param {MessageOptions} message
    */
-  execute(client, message) {
-    const text = (content) => {
-      let msg =
-        `Новости с ${inlineURL(
-          "Discord Sakuga",
-          "https://discord.gg/aDgyJXd8WR"
-        )} канал ${inlineCode(message.channelName)}\n` +
-        `${inlineCode(message.author.displayName)}(${inlineCode(
-          message.author.username
-        )}):\n`;
-      if (content) msg += content;
-      return bold(msg);
-    };
-
+  async execute(client, message) {
+    console.log(TextFormatter(message.content, message));
+    let messageSend = null;
     if (message.attachments?.length) {
-      client.sendMediaGroup({
+      messageSend = await client.sendMediaGroup({
         chatId: channels.telegram.mainChannel,
         media: message.attachments.map((value, index) => {
           if (index == 0)
             return Object.assign(value, {
-              parse_mode: "html",
-              caption: text(message.content),
+              parse_mode: "HTML",
+              caption: TextFormatter(message.content, message),
             });
           return value;
         }),
-        // .splice(
-        //   0,
-        //   1,
-        //   Object.assign(message.attachments[0], {
-        //     parse_mode: "html",
-        //     show_caption_above_media: true,
-        //     caption: text(message.content),
-        //   })
-        // ),
       });
     } else {
-      client.sendMessage({
+      messageSend = await client.sendMessage({
         chatId: channels.telegram.mainChannel,
-        text: text(message.content),
-        parseMode: "html",
+        text: TextFormatter(message.content, message),
+        parseMode: "HTML",
         linkPreviewOptions: {
           is_disabled: true,
         },
       });
     }
+    await modelMessage.create({
+      discordMessage: message.id,
+      telegramMessage: messageSend.id,
+    });
   },
 }).toJSON();
